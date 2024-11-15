@@ -1577,25 +1577,34 @@
                       <div class="items">
                         <div class="item half">
                           <div class="input_wrapper">
-                            <input id="name" type="text" />
+                            <input id="name" name="name" type="text" required />
                             <span class="moving_placeholder">Name *</span>
                           </div>
                         </div>
                         <div class="item half">
                           <div class="input_wrapper">
-                            <input id="email" type="email" />
+                            <input
+                              id="email"
+                              name="email"
+                              type="email"
+                              required
+                            />
                             <span class="moving_placeholder">Email *</span>
                           </div>
                         </div>
                         <div class="item">
                           <div class="input_wrapper">
-                            <input id="phone" type="text" />
+                            <input id="phone" name="phone" type="text" />
                             <span class="moving_placeholder">Phone</span>
                           </div>
                         </div>
                         <div class="item">
                           <div class="input_wrapper">
-                            <textarea id="message"></textarea>
+                            <textarea
+                              id="message"
+                              name="message"
+                              required
+                            ></textarea>
                             <span class="moving_placeholder">Message</span>
                           </div>
                         </div>
