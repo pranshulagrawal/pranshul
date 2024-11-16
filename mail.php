@@ -1,46 +1,39 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-    $name = trim($_POST['name']);
-    $email = trim($_POST['email']);
-    $phone = trim($_POST['phone']);
-    $message = trim($_POST['message']);
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Retrieve and sanitize input
+    $name = htmlspecialchars(trim($_POST['ajax_name'] ?? ''));
+    $email = filter_var(trim($_POST['ajax_email'] ?? ''), FILTER_SANITIZE_EMAIL);
+    $phone = htmlspecialchars(trim($_POST['ajax_phone'] ?? ''));
+    $message = htmlspecialchars(trim($_POST['ajax_message'] ?? ''));
 
     // Validate required fields
     if (empty($name) || empty($email) || empty($message)) {
-        echo "Name, email, and message are required!";
+        echo json_encode(['status' => 'error', 'message' => 'Please fill out all required fields.']);
         exit;
     }
 
-    // Sanitize inputs
-    $name = htmlspecialchars($name);
-    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-    $phone = htmlspecialchars($phone);
-    $message = htmlspecialchars($message);
+    // Define recipient and subject
+    $to = htmlspecialchars(trim($_POST['ajax_emailto'] ?? 'info@pranshulagarwal.in'));
+    $subject = "[INFO] Pranshulagarwal.in New Contact Form Submission";
 
-    // Define recipient email
-    $to = "info@pranshulagarwal.in";
-
-    // Subject of the email
-    $subject = "New Contact Form Submission";
-
-    // Construct the email content
+    // Construct email body
     $body = "You have received a new message from the contact form.\n\n";
     $body .= "Name: $name\n";
     $body .= "Email: $email\n";
     $body .= "Phone: $phone\n";
     $body .= "Message:\n$message\n";
 
-    // Set the email headers
+    // Set headers
     $headers = "From: $to\r\n";
-    $headers .= "Reply-To: $to\r\n";
+    $headers .= "Reply-To: $email\r\n";
     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
-    // Send the email
+    // Send email
     if (mail($to, $subject, $body, $headers)) {
-        echo "Your message has been sent successfully!";
+        echo json_encode(['status' => 'success', 'message' => 'Your message has been sent successfully!']);
     } else {
-        echo "There was an error sending your message. Please try again later.";
+        echo json_encode(['status' => 'error', 'message' => 'Failed to send your message. Please try again later.']);
     }
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
-?>
