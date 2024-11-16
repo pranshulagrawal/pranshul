@@ -1,46 +1,41 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-    $name = trim($_POST['name']);
-    $email = trim($_POST['email']);
-    $phone = trim($_POST['phone']);
-    $message = trim($_POST['message']);
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Retrieve and sanitize input
+    $name = htmlspecialchars(trim($_POST['name'] ?? ''));
+    $email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+    $phone = htmlspecialchars(trim($_POST['phone'] ?? ''));
+    $message = htmlspecialchars(trim($_POST['message'] ?? ''));
 
     // Validate required fields
     if (empty($name) || empty($email) || empty($message)) {
-        echo "Name, email, and message are required!";
+        header("Location: /?status=error");
         exit;
     }
 
-    // Sanitize inputs
-    $name = htmlspecialchars($name);
-    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-    $phone = htmlspecialchars($phone);
-    $message = htmlspecialchars($message);
-
-    // Define recipient email
+    // Define recipient and subject
     $to = "info@pranshulagarwal.in";
-
-    // Subject of the email
     $subject = "[INFO] Pranshulagarwal.in New Contact Form Submission";
 
-    // Construct the email content
+    // Construct email body
     $body = "You have received a new message from the contact form.\n\n";
     $body .= "Name: $name\n";
     $body .= "Email: $email\n";
     $body .= "Phone: $phone\n";
     $body .= "Message:\n$message\n";
 
-    // Set the email headers
+    // Set headers
     $headers = "From: $to\r\n";
-    $headers .= "Reply-To: $to\r\n";
+    $headers .= "Reply-To: $email\r\n";
     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
-    // Send the email
+    // Send email
     if (mail($to, $subject, $body, $headers)) {
-        echo "Your message has been sent successfully!";
+        header("Location: /?status=success");
     } else {
-        echo "There was an error sending your message. Please try again later.";
+        header("Location: /?status=error");
     }
+    exit;
+} else {
+    header("Location: /?status=error");
+    exit;
 }
-?>

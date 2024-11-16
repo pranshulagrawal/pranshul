@@ -1700,20 +1700,22 @@
                     action="/mail.php"
                     method="post"
                     autocomplete="off"
-                    data-email="info@pranshulagarwal.in"
                   >
-                    <!--
-									Don't remove below code in avoid to work contact form properly.
-									You can chance dat-success value with your one. It will be used when user will try to contact via contact form and will get success message.
-								-->
-                    <div
-                      class="success"
-                      data-success="Your message has been received, we will contact you soon."
-                    ></div>
+                    <!-- Success and error messages -->
+                    <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
+                    <div class="success">
+                      Your message has been received, we will contact you soon.
+                    </div>
+                    <?php elseif (isset($_GET['status']) && $_GET['status'] === 'error'): ?>
+                    <div class="error">
+                      There was an error sending your message. Please try again
+                      later.
+                    </div>
+                    <?php endif; ?>
+
                     <div class="empty_notice">
                       <span>Please Fill Required Fields!</span>
                     </div>
-                    <!-- -->
 
                     <div class="items_wrap">
                       <div class="items">
@@ -1751,18 +1753,17 @@
                           </div>
                         </div>
                         <div class="item">
-                          <a
-                            ><button
-                              type="submit"
-                              style="all: unset; cursor: pointer"
-                            >
-                              Send Message
-                            </button></a
+                          <button
+                            type="submit"
+                            style="all: unset; cursor: pointer"
                           >
+                            Send Message
+                          </button>
                         </div>
                       </div>
                     </div>
                   </form>
+
                   <!-- /Contact Form -->
 
                   <!-- Contact Info -->
