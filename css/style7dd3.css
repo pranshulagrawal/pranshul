@@ -1848,7 +1848,6 @@ a:focus {
   font-weight: 500;
 }
 .success {
-  display: none;
   color: #009140;
   margin-bottom: 25px;
   text-align: left;

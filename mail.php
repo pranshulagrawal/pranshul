@@ -30,12 +30,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Send email
     if (mail($to, $subject, $body, $headers)) {
-        header("Location: /?status=success");
+        header("Location: /#contact/?status=success");
     } else {
-        header("Location: /?status=error");
+        header("Location: /#contact/?status=error");
     }
     exit;
 } else {
-    header("Location: /?status=error");
+    header("Location: /#contact/?status=error");
     exit;
 }
