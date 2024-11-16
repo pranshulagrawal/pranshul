@@ -32,8 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $body .= "Message:\n$message\n";
 
     // Set the email headers
-    $headers = "From: $email\r\n";
-    $headers .= "Reply-To: $email\r\n";
+    $headers = "From: $to\r\n";
+    $headers .= "Reply-To: $to\r\n";
     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
     // Send the email

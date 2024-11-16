@@ -206,48 +206,53 @@
       });
     },
     loadBlogPosts: function () {
-      o(".resumo_fn_blog_list .load_more a")
-        .on("mousedown", function () {
-          var e = o(this),
-            t = e.find(".text");
-          if (e.hasClass("done"))
-            return e.addClass("hold"), t.text(e.attr("data-no")), !1;
-        })
-        .on("mouseup", function () {
-          var e = o(this),
-            t = e.find(".text");
-          if (e.hasClass("done"))
-            return e.removeClass("hold"), t.text(e.attr("data-done")), !1;
-        })
-        .on("mouseleave", function () {
-          var e = o(this),
-            t = e.find(".text");
-          if (e.hasClass("done"))
-            return e.removeClass("hold"), t.text(e.attr("data-done")), !1;
-        }),
-        o(".resumo_fn_blog_list .load_more a").on("click", function () {
-          var e = o(this),
-            t = e.find(".text");
-          return (
-            !e.hasClass("loading") &&
-            !e.hasClass("done") &&
-            (e.addClass("loading"),
-            setTimeout(function () {
-              e
-                .closest(".resumo_fn_blog_list")
-                .find(".be_animated")
-                .each(function (e, t) {
-                  setTimeout(function () {
-                    o(t).addClass("fadeInTop done");
-                  }, 100 * e);
-                }),
-                e.addClass("done").removeClass("loading"),
-                t.text(e.attr("data-done"));
-            }, 1500),
-            !1)
+      let loadedPosts = 6; // Number of initially visible posts
+      const postsPerLoad = 6; // Number of posts to load on each click
+      const posts = o(".resumo_fn_blog_list .be_animated"); // All posts
+      const loadMoreButton = o(".resumo_fn_blog_list .load_more a"); // Load More link
+      const buttonText = loadMoreButton.find(".text");
+
+      // Set initial visibility: First 6 posts without classes, the rest with 'hidden'
+      posts.slice(0, loadedPosts).removeClass("hidden visible be_animated");
+      posts.slice(loadedPosts).addClass("hidden");
+
+      loadMoreButton.on("click", function (event) {
+        event.preventDefault(); // Prevent default link behavior
+
+        if (
+          loadMoreButton.hasClass("loading") ||
+          loadMoreButton.hasClass("done")
+        )
+          return false;
+
+        loadMoreButton.addClass("loading");
+
+        setTimeout(function () {
+          // Show the next set of posts by removing their classes
+          const nextPosts = posts.slice(
+            loadedPosts,
+            loadedPosts + postsPerLoad
           );
-        });
+          nextPosts.each(function () {
+            o(this).removeClass("hidden visible be_animated");
+          });
+
+          // Update the count of loaded posts
+          loadedPosts += postsPerLoad;
+
+          // If all posts are loaded, update the button state
+          if (loadedPosts >= posts.length) {
+            loadMoreButton.addClass("done").removeClass("loading");
+            buttonText.text(loadMoreButton.attr("data-done")); // Update link text to "Done"
+          } else {
+            loadMoreButton.removeClass("loading");
+          }
+        }, 1500);
+
+        return false;
+      });
     },
+
     testimonialCarousel: function () {
       o(".resumo_fn_testimonials .owl-carousel").each(function () {
         var e = o(this),
