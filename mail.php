@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = htmlspecialchars($message);
 
     // Define recipient email
-    $to = "Pranshul.er@gmail.com";
+    $to = "info@pranshulagarwal.in";
 
     // Subject of the email
     $subject = "New Contact Form Submission";
