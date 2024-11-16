@@ -154,7 +154,9 @@
           }, 500);
     },
     contactForm: function () {
-      o("#send_message").on("click", function () {
+      o("#send_message").on("click", function (event) {
+        event.preventDefault(); // Prevent default form submission
+
         var e = o(".resumo_fn_contact .contact_form"),
           t = o("#name").val(),
           n = o("#email").val(),
@@ -162,35 +164,48 @@
           s = o("#phone").val(),
           r = e.find(".success"),
           i = r.data("success"),
-          l = e.data("email");
-        return (
-          r.empty(),
-          "" === t || "" === n || "" === a || "" === l || "" === s
-            ? o(".empty_notice").slideDown(500).delay(2e3).slideUp(500)
-            : o.post(
-                "modal/contact.html",
-                {
-                  ajax_name: t,
-                  ajax_email: n,
-                  ajax_emailto: l,
-                  ajax_message: a,
-                  ajax_phone: s,
-                },
-                function (o) {
-                  r.append(o),
-                    r.find(".contact_error").length
-                      ? r.slideDown(500).delay(2e3).slideUp(500)
-                      : (r.append(
-                          "<span class='contact_success'>" + i + "</span>"
-                        ),
-                        r.slideDown(500).delay(4e3).slideUp(500)),
-                    "" === o && e[0].reset();
-                }
-              ),
-          !1
-        );
+          l = e.attr("action");
+
+        r.empty(); // Clear previous messages
+
+        // Validate form fields
+        if ("" === t || "" === n || "" === a) {
+          o(".empty_notice").slideDown(500).delay(2000).slideUp(500);
+          return false;
+        }
+
+        // Submit the form using the Fetch API
+        const formData = new FormData(e[0]);
+
+        fetch(l, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.text())
+          .then((text) => {
+            if (text.toLowerCase().includes("success")) {
+              r.append("<span class='contact_success'>" + i + "</span>");
+              r.slideDown(500).delay(4000).slideUp(500);
+              e[0].reset(); // Reset the form fields
+            } else {
+              r.append(
+                "<span class='contact_error'>There was an error.</span>"
+              );
+              r.slideDown(500).delay(4000).slideUp(500);
+            }
+          })
+          .catch((error) => {
+            r.append(
+              "<span class='contact_error'>There was a technical error.</span>"
+            );
+            r.slideDown(500).delay(4000).slideUp(500);
+            console.error("Error:", error);
+          });
+
+        return false;
       });
     },
+
     movingPlaceholder: function () {
       o(".resumo_fn_contact .input_wrapper").each(function () {
         var e = o(this),

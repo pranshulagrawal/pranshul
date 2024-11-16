@@ -1701,18 +1701,11 @@
                     method="post"
                     autocomplete="off"
                   >
-                    <!-- Success and error messages -->
-                    <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
-                    <div class="success">
-                      Your message has been received, we will contact you soon.
-                    </div>
-                    <?php elseif (isset($_GET['status']) && $_GET['status'] === 'error'): ?>
-                    <div class="error">
-                      There was an error sending your message. Please try again
-                      later.
-                    </div>
-                    <?php endif; ?>
-
+                    <div
+                      class="success"
+                      data-success="Your message has been received, we will contact you soon."
+                      style="display: none; color: green"
+                    ></div>
                     <div class="empty_notice">
                       <span>Please Fill Required Fields!</span>
                     </div>
@@ -1754,6 +1747,7 @@
                         </div>
                         <div class="item">
                           <button
+                            id="send_message"
                             type="submit"
                             style="all: unset; cursor: pointer"
                           >
