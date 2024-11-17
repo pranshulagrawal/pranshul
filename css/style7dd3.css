@@ -1454,9 +1454,7 @@ a:focus {
   font-weight: 500;
   font-size: 24px;
 }
-#customers {
-  padding: 150px 0 42px;
-}
+
 #customers .resumo_fn_main_title {
   margin-bottom: 70px;
 }
@@ -1509,9 +1507,10 @@ a:focus {
   max-width: 180px;
 }
 .resumo_fn_testimonials .my__nav {
-  margin-bottom: 60px;
+  margin-bottom: 20px;
 }
 .resumo_fn_testimonials .desc {
+  text-align: justify;
   margin: 0;
   padding: 0;
   font-size: 30px;
@@ -1535,7 +1534,7 @@ a:focus {
   text-transform: uppercase;
 }
 #news {
-  padding: 150px 0 47px;
+  padding: 20px 0 0 0;
 }
 #news .resumo_fn_main_title {
   margin-bottom: 70px;
@@ -2265,9 +2264,7 @@ a:focus {
   #customers {
     padding-top: 100px;
   }
-  #news {
-    padding-top: 100px;
-  }
+
   #contact {
     padding-top: 100px;
     padding-bottom: 150px;
